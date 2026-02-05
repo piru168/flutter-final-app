@@ -1,0 +1,7 @@
+# Tell GitHub to ignore these in language statistics
+web/** linguist-vendored
+ios/** linguist-vendored
+android/** linguist-vendored
+macos/** linguist-vendored
+linux/** linguist-vendored
+windows/** linguist-vendored
