@@ -202,29 +202,8 @@ class _SplashScreenState extends State<SplashScreen>
                         child: Container(color: MinecraftColors.dirt),
                       ),
                       // Network image
-                      Center(
-                        child: Image.network(
-                          'https://picsum.photos/100/100',
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return SizedBox(
-                              width: 80,
-                              height: 80,
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: MinecraftColors.diamond,
-                                  strokeWidth: 4,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+                     
+              ]),
                 ),
                 SizedBox(height: 40),
                 // App Name
