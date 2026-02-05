@@ -1,4 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+// Minecraft Color Palette
+class MinecraftColors {
+  static const Color grassGreen = Color(0xFF5D8C3E);
+  static const Color darkGreen = Color(0xFF3B5323);
+  static const Color dirt = Color(0xFF8B5A2B);
+  static const Color darkDirt = Color(0xFF5C3317);
+  static const Color stone = Color(0xFF7F7F7F);
+  static const Color darkStone = Color(0xFF4A4A4A);
+  static const Color cobblestone = Color(0xFF6B6B6B);
+  static const Color bedrock = Color(0xFF1A1A1A);
+  static const Color coal = Color(0xFF2F2F2F);
+  static const Color diamond = Color(0xFF4AEDD9);
+  static const Color gold = Color(0xFFFFD700);
+  static const Color iron = Color(0xFFD4D4D4);
+  static const Color redstone = Color(0xFFFF0000);
+  static const Color lava = Color(0xFFFF6600);
+  static const Color water = Color(0xFF3366FF);
+  static const Color wood = Color(0xFF8B6914);
+  static const Color plank = Color(0xFFBC9458);
+  static const Color sand = Color(0xFFE5D5A0);
+  static const Color creeper = Color(0xFF00AA00);
+}
 
 void main() {
   runApp(const MyApp());
@@ -12,43 +36,84 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.indigo,
-          brightness: Brightness.light,
+        scaffoldBackgroundColor: MinecraftColors.dirt,
+        colorScheme: ColorScheme.dark(
+          primary: MinecraftColors.grassGreen,
+          secondary: MinecraftColors.diamond,
+          surface: MinecraftColors.darkDirt,
+          error: MinecraftColors.redstone,
+        ),
+        textTheme: GoogleFonts.pressStart2pTextTheme(
+          ThemeData.dark().textTheme,
         ),
         appBarTheme: AppBarTheme(
           elevation: 0,
           centerTitle: true,
-          backgroundColor: Colors.indigo,
+          backgroundColor: MinecraftColors.darkGreen,
           foregroundColor: Colors.white,
+          titleTextStyle: GoogleFonts.pressStart2p(
+            fontSize: 14,
+            color: Colors.white,
+          ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.indigo,
+            backgroundColor: MinecraftColors.grassGreen,
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.zero, // Blocky!
             ),
+            textStyle: GoogleFonts.pressStart2p(fontSize: 10),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           ),
         ),
         cardTheme: CardThemeData(
-          elevation: 4,
+          elevation: 0,
+          color: MinecraftColors.darkDirt,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.zero, // Blocky!
+            side: BorderSide(color: MinecraftColors.coal, width: 3),
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: Colors.grey.shade100,
+          fillColor: MinecraftColors.coal,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.zero,
+            borderSide: BorderSide(color: MinecraftColors.stone, width: 3),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.zero,
+            borderSide: BorderSide(color: MinecraftColors.stone, width: 3),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.indigo, width: 2),
+            borderRadius: BorderRadius.zero,
+            borderSide: BorderSide(color: MinecraftColors.grassGreen, width: 3),
+          ),
+          labelStyle: GoogleFonts.pressStart2p(
+            fontSize: 10,
+            color: MinecraftColors.sand,
+          ),
+          hintStyle: GoogleFonts.pressStart2p(
+            fontSize: 8,
+            color: MinecraftColors.stone,
+          ),
+        ),
+        iconTheme: IconThemeData(color: MinecraftColors.sand),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: MinecraftColors.bedrock,
+          selectedItemColor: MinecraftColors.grassGreen,
+          unselectedItemColor: MinecraftColors.stone,
+          selectedLabelStyle: GoogleFonts.pressStart2p(fontSize: 8),
+          unselectedLabelStyle: GoogleFonts.pressStart2p(fontSize: 8),
+        ),
+        drawerTheme: DrawerThemeData(backgroundColor: MinecraftColors.darkDirt),
+        dialogTheme: DialogThemeData(
+          backgroundColor: MinecraftColors.darkDirt,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.zero,
+            side: BorderSide(color: MinecraftColors.stone, width: 4),
           ),
         ),
       ),
@@ -67,7 +132,6 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
-  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
@@ -83,14 +147,8 @@ class _SplashScreenState extends State<SplashScreen>
       end: 1.0,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
-    _scaleAnimation = Tween<double>(
-      begin: 0.5,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
-
     _controller.forward();
 
-    // Navigate to Login Page after 5 seconds
     Future.delayed(Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
@@ -115,101 +173,145 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.indigo.shade800,
-              Colors.indigo.shade500,
-              Colors.purple.shade400,
-            ],
-          ),
-        ),
+        decoration: BoxDecoration(color: MinecraftColors.bedrock),
         child: Center(
           child: FadeTransition(
             opacity: _fadeAnimation,
-            child: ScaleTransition(
-              scale: _scaleAnimation,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // App Logo/Image Container
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 20,
-                          offset: Offset(0, 10),
-                        ),
-                      ],
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Minecraft-style block container
+                Container(
+                  width: 150,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    color: MinecraftColors.grassGreen,
+                    border: Border.all(
+                      color: MinecraftColors.darkGreen,
+                      width: 4,
                     ),
-                    child: ClipOval(
-                      child: Image.network(
-                        'https://picsum.photos/150/150',
-                        width: 120,
-                        height: 120,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return SizedBox(
-                            width: 120,
-                            height: 120,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.indigo,
-                              ),
-                            ),
-                          );
-                        },
+                  ),
+                  child: Stack(
+                    children: [
+                      // Dirt bottom
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: 100,
+                        child: Container(color: MinecraftColors.dirt),
                       ),
-                    ),
+                      // Network image
+                      Center(
+                        child: Image.network(
+                          'https://picsum.photos/100/100',
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return SizedBox(
+                              width: 80,
+                              height: 80,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: MinecraftColors.diamond,
+                                  strokeWidth: 4,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 40),
-                  // App Name
-                  Text(
-                    'My Awesome App',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 1.5,
-                    ),
+                ),
+                SizedBox(height: 40),
+                // App Name
+                Text(
+                  'MINECRAFT',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 24,
+                    color: MinecraftColors.sand,
+                    shadows: [
+                      Shadow(
+                        color: MinecraftColors.darkGreen,
+                        offset: Offset(3, 3),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Welcome to the future',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white70,
-                      letterSpacing: 1,
-                    ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'STYLE APP',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 16,
+                    color: MinecraftColors.grassGreen,
                   ),
-                  SizedBox(height: 60),
-                  // Loading Indicator
-                  SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                      strokeWidth: 3,
-                    ),
+                ),
+                SizedBox(height: 60),
+                // Loading bar (Minecraft style)
+                Container(
+                  width: 200,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: MinecraftColors.coal,
+                    border: Border.all(color: MinecraftColors.stone, width: 3),
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Loading...',
-                    style: TextStyle(fontSize: 16, color: Colors.white70),
+                  child: _MinecraftLoadingBar(),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'LOADING...',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 10,
+                    color: MinecraftColors.stone,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _MinecraftLoadingBar extends StatefulWidget {
+  @override
+  State<_MinecraftLoadingBar> createState() => _MinecraftLoadingBarState();
+}
+
+class _MinecraftLoadingBarState extends State<_MinecraftLoadingBar>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: Duration(seconds: 4),
+      vsync: this,
+    )..forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return FractionallySizedBox(
+          alignment: Alignment.centerLeft,
+          widthFactor: _controller.value,
+          child: Container(color: MinecraftColors.grassGreen),
+        );
+      },
     );
   }
 }
@@ -220,46 +322,22 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage>
-    with SingleTickerProviderStateMixin {
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
-  late AnimationController _animationController;
-  late Animation<Offset> _slideAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: Duration(milliseconds: 800),
-      vsync: this,
-    );
-    _slideAnimation = Tween<Offset>(begin: Offset(0, 0.5), end: Offset.zero)
-        .animate(
-          CurvedAnimation(
-            parent: _animationController,
-            curve: Curves.easeOutCubic,
-          ),
-        );
-    _animationController.forward();
-  }
 
   @override
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
-    _animationController.dispose();
     super.dispose();
   }
 
   void _handleLogin() async {
     setState(() => _isLoading = true);
-
-    // Simulate login delay
     await Future.delayed(Duration(seconds: 1));
-
     setState(() => _isLoading = false);
 
     Navigator.pushReplacement(
@@ -268,13 +346,7 @@ class _LoginPageState extends State<LoginPage>
         pageBuilder: (context, animation, secondaryAnimation) =>
             DashboardPage(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(animation),
-            child: child,
-          );
+          return FadeTransition(opacity: animation, child: child);
         },
         transitionDuration: Duration(milliseconds: 400),
       ),
@@ -289,173 +361,144 @@ class _LoginPageState extends State<LoginPage>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.indigo.shade700, Colors.indigo.shade900],
+            colors: [
+              MinecraftColors.darkGreen,
+              MinecraftColors.dirt,
+              MinecraftColors.darkDirt,
+            ],
           ),
         ),
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
               padding: EdgeInsets.all(24),
-              child: SlideTransition(
-                position: _slideAnimation,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Logo
-                    Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 15,
-                            offset: Offset(0, 8),
-                          ),
-                        ],
-                      ),
-                      child: Icon(
-                        Icons.lock_outline,
-                        size: 60,
-                        color: Colors.indigo,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Minecraft Sword/Shield Icon
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: MinecraftColors.stone,
+                      border: Border.all(
+                        color: MinecraftColors.darkStone,
+                        width: 4,
                       ),
                     ),
-                    SizedBox(height: 30),
-                    Text(
-                      'Welcome Back!',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                    child: Icon(
+                      Icons.shield,
+                      size: 60,
+                      color: MinecraftColors.diamond,
                     ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Sign in to continue',
-                      style: TextStyle(fontSize: 16, color: Colors.white70),
+                  ),
+                  SizedBox(height: 30),
+                  Text(
+                    'WELCOME BACK',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 14,
+                      color: MinecraftColors.sand,
                     ),
-                    SizedBox(height: 40),
-                    // Login Card
-                    Container(
-                      padding: EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 20,
-                            offset: Offset(0, 10),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          // Username Field
-                          TextField(
-                            controller: _usernameController,
-                            decoration: InputDecoration(
-                              labelText: 'Username',
-                              hintText: 'Enter your username',
-                              prefixIcon: Icon(
-                                Icons.person,
-                                color: Colors.indigo,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                          // Password Field
-                          TextField(
-                            controller: _passwordController,
-                            obscureText: !_isPasswordVisible,
-                            decoration: InputDecoration(
-                              labelText: 'Password',
-                              hintText: 'Enter your password',
-                              prefixIcon: Icon(
-                                Icons.lock,
-                                color: Colors.indigo,
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _isPasswordVisible
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: Colors.grey,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _isPasswordVisible = !_isPasswordVisible;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 12),
-                          // Forgot Password
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                'Forgot Password?',
-                                style: TextStyle(color: Colors.indigo),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                          // Login Button
-                          SizedBox(
-                            width: double.infinity,
-                            height: 55,
-                            child: ElevatedButton(
-                              onPressed: _isLoading ? null : _handleLogin,
-                              style: ElevatedButton.styleFrom(elevation: 5),
-                              child: _isLoading
-                                  ? SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                        strokeWidth: 2,
-                                      ),
-                                    )
-                                  : Text(
-                                      'LOGIN',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1.5,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                        ],
-                      ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Enter your realm',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 8,
+                      color: MinecraftColors.stone,
                     ),
-                    SizedBox(height: 30),
-                    // Sign Up Link
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                  SizedBox(height: 40),
+                  // Login Container
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: MinecraftColors.darkDirt,
+                      border: Border.all(color: MinecraftColors.coal, width: 4),
+                    ),
+                    child: Column(
                       children: [
-                        Text(
-                          "Don't have an account? ",
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                        // Username
+                        TextField(
+                          controller: _usernameController,
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: 10,
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: 'USERNAME',
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: MinecraftColors.grassGreen,
                             ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        // Password
+                        TextField(
+                          controller: _passwordController,
+                          obscureText: !_isPasswordVisible,
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: 10,
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: 'PASSWORD',
+                            prefixIcon: Icon(
+                              Icons.lock,
+                              color: MinecraftColors.grassGreen,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordVisible
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: MinecraftColors.stone,
+                              ),
+                              onPressed: () {
+                                setState(
+                                  () =>
+                                      _isPasswordVisible = !_isPasswordVisible,
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 30),
+                        // Login Button
+                        SizedBox(
+                          width: double.infinity,
+                          height: 55,
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : _handleLogin,
+                            child: _isLoading
+                                ? SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 3,
+                                    ),
+                                  )
+                                : Text('PLAY'),
                           ),
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 20),
+                  // Register link
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'NEW PLAYER? REGISTER',
+                      style: GoogleFonts.pressStart2p(
+                        fontSize: 8,
+                        color: MinecraftColors.diamond,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -480,9 +523,7 @@ class _DashboardPageState extends State<DashboardPage> {
     if (index == 2) {
       _showLogoutDialog();
     } else {
-      setState(() {
-        _selectedIndex = index;
-      });
+      setState(() => _selectedIndex = index);
     }
   }
 
@@ -490,19 +531,30 @@ class _DashboardPageState extends State<DashboardPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Row(
-          children: [
-            Icon(Icons.logout, color: Colors.red),
-            SizedBox(width: 10),
-            Text('Logout'),
-          ],
+        title: Text(
+          'LOGOUT?',
+          style: GoogleFonts.pressStart2p(
+            fontSize: 12,
+            color: MinecraftColors.redstone,
+          ),
         ),
-        content: Text('Are you sure you want to logout?'),
+        content: Text(
+          'Leave this world?',
+          style: GoogleFonts.pressStart2p(
+            fontSize: 10,
+            color: MinecraftColors.sand,
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+            child: Text(
+              'STAY',
+              style: GoogleFonts.pressStart2p(
+                fontSize: 10,
+                color: MinecraftColors.grassGreen,
+              ),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -520,8 +572,10 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               );
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text('Logout'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: MinecraftColors.redstone,
+            ),
+            child: Text('LEAVE'),
           ),
         ],
       ),
@@ -532,148 +586,135 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_selectedIndex == 0 ? 'Dashboard' : 'Profile'),
+        title: Text(_selectedIndex == 0 ? 'HOME' : 'PROFILE'),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications_outlined),
+            icon: Icon(Icons.notifications, color: MinecraftColors.gold),
             onPressed: () {},
           ),
-          IconButton(icon: Icon(Icons.search), onPressed: () {}),
         ],
       ),
       drawer: _buildDrawer(),
-      body: AnimatedSwitcher(
-        duration: Duration(milliseconds: 300),
-        child: _pages[_selectedIndex],
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10,
-              offset: Offset(0, -5),
-            ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          selectedItemColor: Colors.indigo,
-          unselectedItemColor: Colors.grey,
-          type: BottomNavigationBarType.fixed,
-          elevation: 0,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outlined),
-              activeIcon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.logout, color: Colors.red),
-              label: 'Logout',
-            ),
-          ],
-        ),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'HOME'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'PLAYER'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.exit_to_app, color: MinecraftColors.redstone),
+            label: 'EXIT',
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildDrawer() {
     return Drawer(
-      child: Column(
-        children: [
-          // Drawer Header
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(top: 50, bottom: 20),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Colors.indigo.shade700, Colors.purple.shade400],
-              ),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 3),
+      child: Container(
+        color: MinecraftColors.darkDirt,
+        child: Column(
+          children: [
+            // Header
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(top: 50, bottom: 20),
+              decoration: BoxDecoration(
+                color: MinecraftColors.grassGreen,
+                border: Border(
+                  bottom: BorderSide(
+                    color: MinecraftColors.darkGreen,
+                    width: 4,
                   ),
-                  child: CircleAvatar(
-                    radius: 45,
-                    backgroundImage: NetworkImage(
-                      'https://picsum.photos/200/200',
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: MinecraftColors.stone,
+                      border: Border.all(
+                        color: MinecraftColors.darkStone,
+                        width: 3,
+                      ),
+                    ),
+                    child: Image.network(
+                      'https://picsum.photos/80/80',
+                      fit: BoxFit.cover,
                     ),
                   ),
-                ),
-                SizedBox(height: 15),
-                Text(
-                  'John Doe',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+                  SizedBox(height: 15),
+                  Text(
+                    'STEVE',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Text(
-                  'john.doe@email.com',
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
-                ),
-              ],
+                  Text(
+                    'Level 42',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 10,
+                      color: MinecraftColors.gold,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          // Menu Items
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                _buildDrawerItem(
-                  Icons.home,
-                  'Home',
-                  () => Navigator.pop(context),
-                ),
-                _buildDrawerItem(
-                  Icons.person,
-                  'Profile',
-                  () => Navigator.pop(context),
-                ),
-                _buildDrawerItem(
-                  Icons.settings,
-                  'Settings',
-                  () => Navigator.pop(context),
-                ),
-                _buildDrawerItem(
-                  Icons.help,
-                  'Help & Support',
-                  () => Navigator.pop(context),
-                ),
-                _buildDrawerItem(
-                  Icons.info,
-                  'About',
-                  () => Navigator.pop(context),
-                ),
-                Divider(),
-                _buildDrawerItem(Icons.logout, 'Logout', () {
-                  Navigator.pop(context);
-                  _showLogoutDialog();
-                }, isLogout: true),
-              ],
+            // Menu Items
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  _buildDrawerItem(
+                    Icons.home,
+                    'HOME',
+                    () => Navigator.pop(context),
+                  ),
+                  _buildDrawerItem(
+                    Icons.inventory,
+                    'INVENTORY',
+                    () => Navigator.pop(context),
+                  ),
+                  _buildDrawerItem(
+                    Icons.map,
+                    'MAP',
+                    () => Navigator.pop(context),
+                  ),
+                  _buildDrawerItem(
+                    Icons.settings,
+                    'SETTINGS',
+                    () => Navigator.pop(context),
+                  ),
+                  _buildDrawerItem(
+                    Icons.help,
+                    'HELP',
+                    () => Navigator.pop(context),
+                  ),
+                  Divider(color: MinecraftColors.stone, thickness: 2),
+                  _buildDrawerItem(Icons.exit_to_app, 'QUIT GAME', () {
+                    Navigator.pop(context);
+                    _showLogoutDialog();
+                  }, isLogout: true),
+                ],
+              ),
             ),
-          ),
-          // Version Info
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Text('Version 1.0.0', style: TextStyle(color: Colors.grey)),
-          ),
-        ],
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'v1.0.0',
+                style: GoogleFonts.pressStart2p(
+                  fontSize: 8,
+                  color: MinecraftColors.stone,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -684,18 +725,30 @@ class _DashboardPageState extends State<DashboardPage> {
     VoidCallback onTap, {
     bool isLogout = false,
   }) {
-    return ListTile(
-      leading: Icon(icon, color: isLogout ? Colors.red : Colors.indigo),
-      title: Text(
-        title,
-        style: TextStyle(
-          color: isLogout ? Colors.red : Colors.black87,
-          fontWeight: FontWeight.w500,
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: isLogout ? MinecraftColors.redstone : MinecraftColors.coal,
+          width: 2,
         ),
       ),
-      onTap: onTap,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      hoverColor: Colors.indigo.shade50,
+      child: ListTile(
+        leading: Icon(
+          icon,
+          color: isLogout
+              ? MinecraftColors.redstone
+              : MinecraftColors.grassGreen,
+        ),
+        title: Text(
+          title,
+          style: GoogleFonts.pressStart2p(
+            fontSize: 10,
+            color: isLogout ? MinecraftColors.redstone : MinecraftColors.sand,
+          ),
+        ),
+        onTap: onTap,
+      ),
     );
   }
 }
@@ -709,211 +762,182 @@ class _HomePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Welcome Card
+          // Welcome Banner
           Container(
             width: double.infinity,
-            padding: EdgeInsets.all(24),
+            padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.indigo.shade600, Colors.purple.shade400],
-              ),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.indigo.withOpacity(0.3),
-                  blurRadius: 15,
-                  offset: Offset(0, 8),
-                ),
-              ],
+              color: MinecraftColors.grassGreen,
+              border: Border.all(color: MinecraftColors.darkGreen, width: 4),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Welcome Back! 👋',
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
+                  'WELCOME BACK',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 14,
                     color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Here\'s what\'s happening today',
-                  style: TextStyle(fontSize: 16, color: Colors.white70),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 24),
-          // Stats Row
-          Row(
-            children: [
-              Expanded(
-                child: _buildStatCard(
-                  '128',
-                  'Messages',
-                  Icons.message,
-                  Colors.blue,
-                ),
-              ),
-              SizedBox(width: 12),
-              Expanded(
-                child: _buildStatCard(
-                  '32',
-                  'Tasks',
-                  Icons.task_alt,
-                  Colors.green,
-                ),
-              ),
-              SizedBox(width: 12),
-              Expanded(
-                child: _buildStatCard(
-                  '8',
-                  'Alerts',
-                  Icons.notifications,
-                  Colors.orange,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 24),
-          // Featured Image
-          Text(
-            'Featured',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 12),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Stack(
-              children: [
-                Image.network(
-                  'https://picsum.photos/800/400',
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.cover,
-                ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        colors: [Colors.black87, Colors.transparent],
-                      ),
-                    ),
-                    child: Text(
-                      'Discover Amazing Content',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  'Ready to mine?',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 10,
+                    color: MinecraftColors.sand,
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 24),
-          // Recent Activity
+          SizedBox(height: 20),
+          // Stats
+          Row(
+            children: [
+              Expanded(
+                child: _buildStatBlock(
+                  '128',
+                  'DIAMONDS',
+                  MinecraftColors.diamond,
+                ),
+              ),
+              SizedBox(width: 12),
+              Expanded(
+                child: _buildStatBlock('64', 'GOLD', MinecraftColors.gold),
+              ),
+              SizedBox(width: 12),
+              Expanded(
+                child: _buildStatBlock('256', 'IRON', MinecraftColors.iron),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          // Featured
           Text(
-            'Recent Activity',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            'FEATURED',
+            style: GoogleFonts.pressStart2p(
+              fontSize: 12,
+              color: MinecraftColors.sand,
+            ),
           ),
           SizedBox(height: 12),
-          _buildActivityCard(
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: MinecraftColors.coal, width: 4),
+            ),
+            child: Image.network(
+              'https://picsum.photos/400/200',
+              width: double.infinity,
+              height: 150,
+              fit: BoxFit.cover,
+            ),
+          ),
+          SizedBox(height: 20),
+          // Activities
+          Text(
+            'RECENT',
+            style: GoogleFonts.pressStart2p(
+              fontSize: 12,
+              color: MinecraftColors.sand,
+            ),
+          ),
+          SizedBox(height: 12),
+          _buildActivityItem(
             Icons.star,
-            Colors.amber,
-            'New Achievement',
-            'You\'ve completed 10 tasks this week!',
-            '2 hours ago',
+            MinecraftColors.gold,
+            'Achievement!',
+            'Mined 1000 blocks',
           ),
-          _buildActivityCard(
+          _buildActivityItem(
             Icons.person_add,
-            Colors.blue,
-            'New Follower',
-            'Sarah started following you',
-            '5 hours ago',
+            MinecraftColors.diamond,
+            'New Friend',
+            'Alex joined',
           ),
-          _buildActivityCard(
-            Icons.comment,
-            Colors.green,
-            'New Comment',
-            'Mike commented on your post',
-            'Yesterday',
+          _buildActivityItem(
+            Icons.dangerous,
+            MinecraftColors.redstone,
+            'Mob Defeated',
+            'Creeper down!',
           ),
         ],
       ),
     );
   }
 
-  Widget _buildStatCard(
-    String value,
-    String label,
-    IconData icon,
-    Color color,
-  ) {
+  Widget _buildStatBlock(String value, String label, Color color) {
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: Offset(0, 4),
-          ),
-        ],
+        color: MinecraftColors.darkDirt,
+        border: Border.all(color: MinecraftColors.coal, width: 3),
       ),
       child: Column(
         children: [
-          Icon(icon, color: color, size: 28),
-          SizedBox(height: 8),
           Text(
             value,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+            style: GoogleFonts.pressStart2p(fontSize: 16, color: color),
+          ),
+          SizedBox(height: 8),
+          Text(
+            label,
+            style: GoogleFonts.pressStart2p(
+              fontSize: 6,
+              color: MinecraftColors.stone,
             ),
           ),
-          Text(label, style: TextStyle(fontSize: 12, color: Colors.grey)),
         ],
       ),
     );
   }
 
-  Widget _buildActivityCard(
+  Widget _buildActivityItem(
     IconData icon,
     Color color,
     String title,
     String subtitle,
-    String time,
   ) {
-    return Card(
-      margin: EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        leading: Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+    return Container(
+      margin: EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: MinecraftColors.darkDirt,
+        border: Border.all(color: MinecraftColors.coal, width: 2),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.2),
+              border: Border.all(color: color, width: 2),
+            ),
+            child: Icon(icon, color: color, size: 20),
           ),
-          child: Icon(icon, color: color),
-        ),
-        title: Text(title, style: TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(subtitle),
-        trailing: Text(
-          time,
-          style: TextStyle(color: Colors.grey, fontSize: 12),
-        ),
+          SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 8,
+                    color: MinecraftColors.sand,
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 6,
+                    color: MinecraftColors.stone,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -928,61 +952,63 @@ class _ProfilePage extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: 20),
-          // Profile Picture
+          // Avatar Block
           Container(
-            padding: EdgeInsets.all(4),
+            width: 120,
+            height: 120,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(colors: [Colors.indigo, Colors.purple]),
+              color: MinecraftColors.stone,
+              border: Border.all(color: MinecraftColors.darkStone, width: 4),
             ),
-            child: CircleAvatar(
-              radius: 60,
-              backgroundImage: NetworkImage('https://picsum.photos/200/200'),
+            child: Image.network(
+              'https://picsum.photos/120/120',
+              fit: BoxFit.cover,
             ),
           ),
           SizedBox(height: 16),
           Text(
-            'John Doe',
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            'STEVE',
+            style: GoogleFonts.pressStart2p(
+              fontSize: 18,
+              color: MinecraftColors.sand,
+            ),
           ),
           Text(
-            'Flutter Developer',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
+            'Master Builder',
+            style: GoogleFonts.pressStart2p(
+              fontSize: 10,
+              color: MinecraftColors.grassGreen,
+            ),
           ),
           SizedBox(height: 24),
-          // Stats
+          // Stats Row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildProfileStat('Posts', '142'),
-              _buildProfileStat('Followers', '1.2K'),
-              _buildProfileStat('Following', '568'),
+              _buildProfileStat('BLOCKS', '9,999'),
+              _buildProfileStat('MOBS', '142'),
+              _buildProfileStat('DAYS', '365'),
             ],
           ),
           SizedBox(height: 24),
-          // Edit Profile Button
+          // Edit Button
           SizedBox(
             width: double.infinity,
-            child: OutlinedButton.icon(
+            child: ElevatedButton.icon(
               onPressed: () {},
               icon: Icon(Icons.edit),
-              label: Text('Edit Profile'),
-              style: OutlinedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 14),
-                side: BorderSide(color: Colors.indigo),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+              label: Text('EDIT SKIN'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: MinecraftColors.diamond,
               ),
             ),
           ),
           SizedBox(height: 24),
-          // Settings List
-          _buildSettingsTile(Icons.person, 'Account Settings'),
-          _buildSettingsTile(Icons.notifications, 'Notifications'),
-          _buildSettingsTile(Icons.lock, 'Privacy'),
-          _buildSettingsTile(Icons.help, 'Help & Support'),
-          _buildSettingsTile(Icons.info, 'About'),
+          // Settings
+          _buildSettingsTile(Icons.inventory_2, 'INVENTORY'),
+          _buildSettingsTile(Icons.emoji_events, 'ACHIEVEMENTS'),
+          _buildSettingsTile(Icons.leaderboard, 'LEADERBOARD'),
+          _buildSettingsTile(Icons.settings, 'SETTINGS'),
         ],
       ),
     );
@@ -993,27 +1019,40 @@ class _ProfilePage extends StatelessWidget {
       children: [
         Text(
           value,
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          style: GoogleFonts.pressStart2p(
+            fontSize: 12,
+            color: MinecraftColors.gold,
+          ),
         ),
-        Text(label, style: TextStyle(color: Colors.grey)),
+        SizedBox(height: 4),
+        Text(
+          label,
+          style: GoogleFonts.pressStart2p(
+            fontSize: 8,
+            color: MinecraftColors.stone,
+          ),
+        ),
       ],
     );
   }
 
   Widget _buildSettingsTile(IconData icon, String title) {
-    return Card(
+    return Container(
       margin: EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: MinecraftColors.darkDirt,
+        border: Border.all(color: MinecraftColors.coal, width: 2),
+      ),
       child: ListTile(
-        leading: Container(
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.indigo.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(10),
+        leading: Icon(icon, color: MinecraftColors.grassGreen),
+        title: Text(
+          title,
+          style: GoogleFonts.pressStart2p(
+            fontSize: 10,
+            color: MinecraftColors.sand,
           ),
-          child: Icon(icon, color: Colors.indigo),
         ),
-        title: Text(title),
-        trailing: Icon(Icons.chevron_right, color: Colors.grey),
+        trailing: Icon(Icons.chevron_right, color: MinecraftColors.stone),
         onTap: () {},
       ),
     );
