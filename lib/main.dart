@@ -200,14 +200,15 @@ class _SplashScreenState extends State<SplashScreen>
                         height: 100,
                         child: Container(color: MinecraftColors.dirt),
                       ),
+
                       // Network image
-                     
-              ]),
+                    ],
+                  ),
                 ),
                 SizedBox(height: 40),
                 // App Name
                 Text(
-                  'MINECRAFT',
+                  'PIXEL SHOP',
                   style: GoogleFonts.pressStart2p(
                     fontSize: 24,
                     color: MinecraftColors.sand,
@@ -221,7 +222,7 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'STYLE APP',
+                  'E-COMMERCE',
                   style: GoogleFonts.pressStart2p(
                     fontSize: 16,
                     color: MinecraftColors.grassGreen,
@@ -380,7 +381,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Enter your realm',
+                    'Shop with us',
                     style: GoogleFonts.pressStart2p(
                       fontSize: 8,
                       color: MinecraftColors.stone,
@@ -458,7 +459,7 @@ class _LoginPageState extends State<LoginPage> {
                                       strokeWidth: 3,
                                     ),
                                   )
-                                : Text('PLAY'),
+                                : Text('LOGIN'),
                           ),
                         ),
                       ],
@@ -469,7 +470,7 @@ class _LoginPageState extends State<LoginPage> {
                   TextButton(
                     onPressed: () {},
                     child: Text(
-                      'NEW PLAYER? REGISTER',
+                      'NEW USER? REGISTER',
                       style: GoogleFonts.pressStart2p(
                         fontSize: 8,
                         color: MinecraftColors.diamond,
@@ -495,10 +496,10 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [_HomePage(), _ProfilePage()];
+  final List<Widget> _pages = [_HomePage(), _CartPage(), _ProfilePage()];
 
   void _onItemTapped(int index) {
-    if (index == 2) {
+    if (index == 3) {
       _showLogoutDialog();
     } else {
       setState(() => _selectedIndex = index);
@@ -517,7 +518,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ),
         content: Text(
-          'Leave this world?',
+          'Exit shop?',
           style: GoogleFonts.pressStart2p(
             fontSize: 10,
             color: MinecraftColors.sand,
@@ -564,10 +565,16 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_selectedIndex == 0 ? 'HOME' : 'PROFILE'),
+        title: Text(
+          _selectedIndex == 0
+              ? 'SHOP'
+              : _selectedIndex == 1
+              ? 'CART'
+              : 'PROFILE',
+        ),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications, color: MinecraftColors.gold),
+            icon: Icon(Icons.search, color: MinecraftColors.gold),
             onPressed: () {},
           ),
         ],
@@ -577,12 +584,17 @@ class _DashboardPageState extends State<DashboardPage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'HOME'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'PLAYER'),
+          BottomNavigationBarItem(icon: Icon(Icons.shop), label: 'SHOP'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'CART',
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'PROFILE'),
           BottomNavigationBarItem(
             icon: Icon(Icons.exit_to_app, color: MinecraftColors.redstone),
-            label: 'EXIT',
+            label: 'LOGOUT',
           ),
         ],
       ),
@@ -621,20 +633,20 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                     ),
                     child: Image.network(
-                      'https://picsum.photos/80/80',
+                      'https://i.pravatar.cc/80',
                       fit: BoxFit.cover,
                     ),
                   ),
                   SizedBox(height: 15),
                   Text(
-                    'STEVE',
+                    'CUSTOMER',
                     style: GoogleFonts.pressStart2p(
                       fontSize: 14,
                       color: Colors.white,
                     ),
                   ),
                   Text(
-                    'Level 42',
+                    'Premium',
                     style: GoogleFonts.pressStart2p(
                       fontSize: 10,
                       color: MinecraftColors.gold,
@@ -648,33 +660,46 @@ class _DashboardPageState extends State<DashboardPage> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                  _buildDrawerItem(
-                    Icons.home,
-                    'HOME',
-                    () => Navigator.pop(context),
-                  ),
-                  _buildDrawerItem(
-                    Icons.inventory,
-                    'INVENTORY',
-                    () => Navigator.pop(context),
-                  ),
-                  _buildDrawerItem(
-                    Icons.map,
-                    'MAP',
-                    () => Navigator.pop(context),
-                  ),
-                  _buildDrawerItem(
-                    Icons.settings,
-                    'SETTINGS',
-                    () => Navigator.pop(context),
-                  ),
-                  _buildDrawerItem(
-                    Icons.help,
-                    'HELP',
-                    () => Navigator.pop(context),
-                  ),
+                  _buildDrawerItem(Icons.shop, 'SHOP', () {
+                    Navigator.pop(context);
+                    setState(() => _selectedIndex = 0);
+                  }),
+                  _buildDrawerItem(Icons.shopping_cart, 'CART', () {
+                    Navigator.pop(context);
+                    setState(() => _selectedIndex = 1);
+                  }),
+                  _buildDrawerItem(Icons.favorite, 'WISHLIST', () {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Wishlist coming soon!',
+                          style: GoogleFonts.pressStart2p(fontSize: 8),
+                        ),
+                        backgroundColor: MinecraftColors.grassGreen,
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  }),
+                  _buildDrawerItem(Icons.receipt, 'ORDERS', () {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Orders coming soon!',
+                          style: GoogleFonts.pressStart2p(fontSize: 8),
+                        ),
+                        backgroundColor: MinecraftColors.grassGreen,
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  }),
+                  _buildDrawerItem(Icons.settings, 'SETTINGS', () {
+                    Navigator.pop(context);
+                    setState(() => _selectedIndex = 2);
+                  }),
                   Divider(color: MinecraftColors.stone, thickness: 2),
-                  _buildDrawerItem(Icons.exit_to_app, 'QUIT GAME', () {
+                  _buildDrawerItem(Icons.exit_to_app, 'LOGOUT', () {
                     Navigator.pop(context);
                     _showLogoutDialog();
                   }, isLogout: true),
@@ -731,8 +756,152 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 }
 
+// ==================== PRODUCT MODEL ====================
+class Product {
+  final String id;
+  final String name;
+  final double price;
+  final String imageUrl;
+  final String category;
+  final String description;
+
+  Product({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.imageUrl,
+    required this.category,
+    required this.description,
+  });
+}
+
+// ==================== CART ITEM ====================
+class CartItem {
+  final Product product;
+  int quantity;
+
+  CartItem({required this.product, this.quantity = 1});
+}
+
+// ==================== CART SERVICE ====================
+class CartService {
+  static final CartService _instance = CartService._internal();
+  factory CartService() => _instance;
+  CartService._internal();
+
+  final List<CartItem> _items = [];
+
+  List<CartItem> get items => _items;
+
+  void addToCart(Product product) {
+    final existingIndex = _items.indexWhere(
+      (item) => item.product.id == product.id,
+    );
+    if (existingIndex >= 0) {
+      _items[existingIndex].quantity++;
+    } else {
+      _items.add(CartItem(product: product));
+    }
+  }
+
+  void removeFromCart(String productId) {
+    _items.removeWhere((item) => item.product.id == productId);
+  }
+
+  void updateQuantity(String productId, int quantity) {
+    final index = _items.indexWhere((item) => item.product.id == productId);
+    if (index >= 0) {
+      if (quantity <= 0) {
+        _items.removeAt(index);
+      } else {
+        _items[index].quantity = quantity;
+      }
+    }
+  }
+
+  double get total {
+    return _items.fold(
+      0,
+      (sum, item) => sum + (item.product.price * item.quantity),
+    );
+  }
+
+  int get itemCount {
+    return _items.fold(0, (sum, item) => sum + item.quantity);
+  }
+
+  void clear() {
+    _items.clear();
+  }
+}
+
+// ==================== SAMPLE PRODUCTS ====================
+final List<Product> sampleProducts = [
+  Product(
+    id: '1',
+    name: 'Wireless Headphones',
+    price: 89.99,
+    imageUrl:
+        'https://images.pexels.com/photos/3587478/pexels-photo-3587478.jpeg?auto=compress&cs=tinysrgb&w=400',
+    category: 'Electronics',
+    description: 'Premium sound quality',
+  ),
+  Product(
+    id: '2',
+    name: 'Smart Watch',
+    price: 199.99,
+    imageUrl:
+        'https://images.pexels.com/photos/393047/pexels-photo-393047.jpeg?auto=compress&cs=tinysrgb&w=400',
+    category: 'Electronics',
+    description: 'Track your fitness',
+  ),
+  Product(
+    id: '3',
+    name: 'Laptop Stand',
+    price: 49.99,
+    imageUrl:
+        'https://images.pexels.com/photos/7974/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400',
+    category: 'Accessories',
+    description: 'Ergonomic design',
+  ),
+  Product(
+    id: '4',
+    name: 'USB-C Cable',
+    price: 19.99,
+    imageUrl:
+        'https://images.pexels.com/photos/4219861/pexels-photo-4219861.jpeg?auto=compress&cs=tinysrgb&w=400',
+    category: 'Accessories',
+    description: 'Fast charging',
+  ),
+  Product(
+    id: '5',
+    name: 'Keyboard',
+    price: 129.99,
+    imageUrl:
+        'https://images.pexels.com/photos/1714208/pexels-photo-1714208.jpeg?auto=compress&cs=tinysrgb&w=400',
+    category: 'Electronics',
+    description: 'Mechanical switches',
+  ),
+  Product(
+    id: '6',
+    name: 'Mouse Pad',
+    price: 24.99,
+    imageUrl:
+        'https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=400',
+    category: 'Accessories',
+    description: 'Extra large size',
+  ),
+];
+
 // ==================== HOME PAGE CONTENT ====================
-class _HomePage extends StatelessWidget {
+class _HomePage extends StatefulWidget {
+  @override
+  State<_HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<_HomePage> {
+  final CartService _cartService = CartService();
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -752,7 +921,7 @@ class _HomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'WELCOME BACK',
+                  'PIXEL SHOP',
                   style: GoogleFonts.pressStart2p(
                     fontSize: 14,
                     color: Colors.white,
@@ -760,9 +929,9 @@ class _HomePage extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Ready to mine?',
+                  'Shop premium items',
                   style: GoogleFonts.pressStart2p(
-                    fontSize: 10,
+                    fontSize: 8,
                     color: MinecraftColors.sand,
                   ),
                 ),
@@ -770,28 +939,26 @@ class _HomePage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
-          // Stats
+          // Categories
+          Text(
+            'CATEGORIES',
+            style: GoogleFonts.pressStart2p(
+              fontSize: 12,
+              color: MinecraftColors.sand,
+            ),
+          ),
+          SizedBox(height: 12),
           Row(
             children: [
               Expanded(
-                child: _buildStatBlock(
-                  '128',
-                  'DIAMONDS',
-                  MinecraftColors.diamond,
-                ),
+                child: _buildCategoryCard('Electronics', Icons.phone_android),
               ),
               SizedBox(width: 12),
-              Expanded(
-                child: _buildStatBlock('64', 'GOLD', MinecraftColors.gold),
-              ),
-              SizedBox(width: 12),
-              Expanded(
-                child: _buildStatBlock('256', 'IRON', MinecraftColors.iron),
-              ),
+              Expanded(child: _buildCategoryCard('Accessories', Icons.headset)),
             ],
           ),
           SizedBox(height: 20),
-          // Featured
+          // Featured Products
           Text(
             'FEATURED',
             style: GoogleFonts.pressStart2p(
@@ -800,116 +967,116 @@ class _HomePage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 12),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: MinecraftColors.coal, width: 4),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 0.75,
             ),
-            child: Image.network(
-              'https://picsum.photos/400/200',
-              width: double.infinity,
-              height: 150,
-              fit: BoxFit.cover,
-            ),
-          ),
-          SizedBox(height: 20),
-          // Activities
-          Text(
-            'RECENT',
-            style: GoogleFonts.pressStart2p(
-              fontSize: 12,
-              color: MinecraftColors.sand,
-            ),
-          ),
-          SizedBox(height: 12),
-          _buildActivityItem(
-            Icons.star,
-            MinecraftColors.gold,
-            'Achievement!',
-            'Mined 1000 blocks',
-          ),
-          _buildActivityItem(
-            Icons.person_add,
-            MinecraftColors.diamond,
-            'New Friend',
-            'Alex joined',
-          ),
-          _buildActivityItem(
-            Icons.dangerous,
-            MinecraftColors.redstone,
-            'Mob Defeated',
-            'Creeper down!',
+            itemCount: sampleProducts.length,
+            itemBuilder: (context, index) {
+              return _buildProductCard(sampleProducts[index]);
+            },
           ),
         ],
       ),
     );
   }
 
-  Widget _buildStatBlock(String value, String label, Color color) {
+  Widget _buildCategoryCard(String title, IconData icon) {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: MinecraftColors.darkDirt,
         border: Border.all(color: MinecraftColors.coal, width: 3),
       ),
       child: Column(
         children: [
-          Text(
-            value,
-            style: GoogleFonts.pressStart2p(fontSize: 16, color: color),
-          ),
+          Icon(icon, color: MinecraftColors.grassGreen, size: 30),
           SizedBox(height: 8),
           Text(
-            label,
+            title,
             style: GoogleFonts.pressStart2p(
-              fontSize: 6,
-              color: MinecraftColors.stone,
+              fontSize: 8,
+              color: MinecraftColors.sand,
             ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildActivityItem(
-    IconData icon,
-    Color color,
-    String title,
-    String subtitle,
-  ) {
+  Widget _buildProductCard(Product product) {
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
-      padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: MinecraftColors.darkDirt,
-        border: Border.all(color: MinecraftColors.coal, width: 2),
+        border: Border.all(color: MinecraftColors.coal, width: 3),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.all(8),
+            height: 120,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
-              border: Border.all(color: color, width: 2),
+              border: Border(
+                bottom: BorderSide(color: MinecraftColors.coal, width: 3),
+              ),
             ),
-            child: Icon(icon, color: color, size: 20),
+            child: Image.network(
+              product.imageUrl,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
           ),
-          SizedBox(width: 12),
-          Expanded(
+          Padding(
+            padding: EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  product.name,
                   style: GoogleFonts.pressStart2p(
                     fontSize: 8,
                     color: MinecraftColors.sand,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
+                SizedBox(height: 4),
                 Text(
-                  subtitle,
+                  '\$${product.price.toStringAsFixed(2)}',
                   style: GoogleFonts.pressStart2p(
-                    fontSize: 6,
-                    color: MinecraftColors.stone,
+                    fontSize: 10,
+                    color: MinecraftColors.gold,
+                  ),
+                ),
+                SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  height: 35,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _cartService.addToCart(product);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Added to cart!',
+                            style: GoogleFonts.pressStart2p(fontSize: 8),
+                          ),
+                          backgroundColor: MinecraftColors.grassGreen,
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
+                      setState(() {});
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                    ),
+                    child: Icon(Icons.add_shopping_cart, size: 16),
                   ),
                 ),
               ],
@@ -921,8 +1088,278 @@ class _HomePage extends StatelessWidget {
   }
 }
 
+// ==================== CART PAGE CONTENT ====================
+class _CartPage extends StatefulWidget {
+  @override
+  State<_CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<_CartPage> {
+  final CartService _cartService = CartService();
+
+  @override
+  Widget build(BuildContext context) {
+    final items = _cartService.items;
+
+    if (items.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                color: MinecraftColors.darkDirt,
+                border: Border.all(color: MinecraftColors.coal, width: 4),
+              ),
+              child: Icon(
+                Icons.shopping_cart_outlined,
+                size: 80,
+                color: MinecraftColors.stone,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'CART EMPTY',
+              style: GoogleFonts.pressStart2p(
+                fontSize: 14,
+                color: MinecraftColors.sand,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Add items to cart',
+              style: GoogleFonts.pressStart2p(
+                fontSize: 8,
+                color: MinecraftColors.stone,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            padding: EdgeInsets.all(16),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              return _buildCartItem(items[index]);
+            },
+          ),
+        ),
+        _buildCheckoutSection(),
+      ],
+    );
+  }
+
+  Widget _buildCartItem(CartItem item) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: MinecraftColors.darkDirt,
+        border: Border.all(color: MinecraftColors.coal, width: 3),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              border: Border(
+                right: BorderSide(color: MinecraftColors.coal, width: 3),
+              ),
+            ),
+            child: Image.network(item.product.imageUrl, fit: BoxFit.cover),
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.product.name,
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 8,
+                      color: MinecraftColors.sand,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    '\$${item.product.price.toStringAsFixed(2)}',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 10,
+                      color: MinecraftColors.gold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    children: [
+                      _buildQuantityButton(Icons.remove, () {
+                        setState(() {
+                          _cartService.updateQuantity(
+                            item.product.id,
+                            item.quantity - 1,
+                          );
+                        });
+                      }),
+                      SizedBox(width: 8),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: MinecraftColors.coal,
+                          border: Border.all(
+                            color: MinecraftColors.stone,
+                            width: 2,
+                          ),
+                        ),
+                        child: Text(
+                          '${item.quantity}',
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: 10,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      _buildQuantityButton(Icons.add, () {
+                        setState(() {
+                          _cartService.updateQuantity(
+                            item.product.id,
+                            item.quantity + 1,
+                          );
+                        });
+                      }),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.delete, color: MinecraftColors.redstone),
+            onPressed: () {
+              setState(() {
+                _cartService.removeFromCart(item.product.id);
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuantityButton(IconData icon, VoidCallback onPressed) {
+    return Container(
+      width: 30,
+      height: 30,
+      decoration: BoxDecoration(
+        color: MinecraftColors.grassGreen,
+        border: Border.all(color: MinecraftColors.darkGreen, width: 2),
+      ),
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        icon: Icon(icon, size: 16, color: Colors.white),
+        onPressed: onPressed,
+      ),
+    );
+  }
+
+  Widget _buildCheckoutSection() {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: MinecraftColors.darkDirt,
+        border: Border(top: BorderSide(color: MinecraftColors.coal, width: 4)),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'TOTAL',
+                style: GoogleFonts.pressStart2p(
+                  fontSize: 12,
+                  color: MinecraftColors.sand,
+                ),
+              ),
+              Text(
+                '\$${_cartService.total.toStringAsFixed(2)}',
+                style: GoogleFonts.pressStart2p(
+                  fontSize: 14,
+                  color: MinecraftColors.gold,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: () {
+                _showCheckoutDialog();
+              },
+              child: Text('CHECKOUT'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showCheckoutDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'CHECKOUT',
+          style: GoogleFonts.pressStart2p(
+            fontSize: 12,
+            color: MinecraftColors.grassGreen,
+          ),
+        ),
+        content: Text(
+          'Order placed!\nTotal: \$${_cartService.total.toStringAsFixed(2)}',
+          style: GoogleFonts.pressStart2p(
+            fontSize: 10,
+            color: MinecraftColors.sand,
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                _cartService.clear();
+              });
+              Navigator.pop(context);
+            },
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 // ==================== PROFILE PAGE CONTENT ====================
-class _ProfilePage extends StatelessWidget {
+class _ProfilePage extends StatefulWidget {
+  @override
+  State<_ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<_ProfilePage> {
+  String _userName = 'CUSTOMER';
+  String _userEmail = 'customer@pixelshop.com';
+  int _avatarSeed = 12;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -931,28 +1368,54 @@ class _ProfilePage extends StatelessWidget {
         children: [
           SizedBox(height: 20),
           // Avatar Block
-          Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              color: MinecraftColors.stone,
-              border: Border.all(color: MinecraftColors.darkStone, width: 4),
-            ),
-            child: Image.network(
-              'https://picsum.photos/120/120',
-              fit: BoxFit.cover,
+          GestureDetector(
+            onTap: () => _changeAvatar(),
+            child: Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                color: MinecraftColors.stone,
+                border: Border.all(color: MinecraftColors.darkStone, width: 4),
+              ),
+              child: Stack(
+                children: [
+                  Image.network(
+                    'https://i.pravatar.cc/120?img=$_avatarSeed',
+                    fit: BoxFit.cover,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: MinecraftColors.grassGreen,
+                        border: Border.all(
+                          color: MinecraftColors.darkGreen,
+                          width: 2,
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.camera_alt,
+                        size: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           SizedBox(height: 16),
           Text(
-            'STEVE',
+            _userName,
             style: GoogleFonts.pressStart2p(
               fontSize: 18,
               color: MinecraftColors.sand,
             ),
           ),
           Text(
-            'Master Builder',
+            'Premium Member',
             style: GoogleFonts.pressStart2p(
               fontSize: 10,
               color: MinecraftColors.grassGreen,
@@ -963,9 +1426,9 @@ class _ProfilePage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildProfileStat('BLOCKS', '9,999'),
-              _buildProfileStat('MOBS', '142'),
-              _buildProfileStat('DAYS', '365'),
+              _buildProfileStat('ORDERS', '42'),
+              _buildProfileStat('WISHLIST', '18'),
+              _buildProfileStat('POINTS', '2,400'),
             ],
           ),
           SizedBox(height: 24),
@@ -973,9 +1436,11 @@ class _ProfilePage extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                _showEditProfileDialog();
+              },
               icon: Icon(Icons.edit),
-              label: Text('EDIT SKIN'),
+              label: Text('EDIT PROFILE'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: MinecraftColors.diamond,
               ),
@@ -983,10 +1448,21 @@ class _ProfilePage extends StatelessWidget {
           ),
           SizedBox(height: 24),
           // Settings
-          _buildSettingsTile(Icons.inventory_2, 'INVENTORY'),
-          _buildSettingsTile(Icons.emoji_events, 'ACHIEVEMENTS'),
-          _buildSettingsTile(Icons.leaderboard, 'LEADERBOARD'),
-          _buildSettingsTile(Icons.settings, 'SETTINGS'),
+          _buildSettingsTile(Icons.receipt_long, 'MY ORDERS', () {
+            _showOrdersPage();
+          }),
+          _buildSettingsTile(Icons.favorite, 'WISHLIST', () {
+            _showWishlistPage();
+          }),
+          _buildSettingsTile(Icons.location_on, 'ADDRESSES', () {
+            _showAddressesPage();
+          }),
+          _buildSettingsTile(Icons.payment, 'PAYMENT', () {
+            _showPaymentPage();
+          }),
+          _buildSettingsTile(Icons.settings, 'SETTINGS', () {
+            _showSettingsPage();
+          }),
         ],
       ),
     );
@@ -1014,7 +1490,7 @@ class _ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildSettingsTile(IconData icon, String title) {
+  Widget _buildSettingsTile(IconData icon, String title, VoidCallback onTap) {
     return Container(
       margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
@@ -1031,7 +1507,849 @@ class _ProfilePage extends StatelessWidget {
           ),
         ),
         trailing: Icon(Icons.chevron_right, color: MinecraftColors.stone),
-        onTap: () {},
+        onTap: onTap,
+      ),
+    );
+  }
+
+  void _changeAvatar() {
+    setState(() {
+      _avatarSeed = (DateTime.now().millisecondsSinceEpoch % 70) + 1;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Avatar updated!',
+          style: GoogleFonts.pressStart2p(fontSize: 8),
+        ),
+        backgroundColor: MinecraftColors.grassGreen,
+        duration: Duration(seconds: 1),
+      ),
+    );
+  }
+
+  void _showEditProfileDialog() {
+    final nameController = TextEditingController(text: _userName);
+    final emailController = TextEditingController(text: _userEmail);
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'EDIT PROFILE',
+          style: GoogleFonts.pressStart2p(
+            fontSize: 12,
+            color: MinecraftColors.grassGreen,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              style: GoogleFonts.pressStart2p(
+                fontSize: 10,
+                color: Colors.white,
+              ),
+              decoration: InputDecoration(
+                labelText: 'NAME',
+                prefixIcon: Icon(
+                  Icons.person,
+                  color: MinecraftColors.grassGreen,
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: emailController,
+              style: GoogleFonts.pressStart2p(
+                fontSize: 10,
+                color: Colors.white,
+              ),
+              decoration: InputDecoration(
+                labelText: 'EMAIL',
+                prefixIcon: Icon(
+                  Icons.email,
+                  color: MinecraftColors.grassGreen,
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              nameController.dispose();
+              emailController.dispose();
+              Navigator.pop(context);
+            },
+            child: Text(
+              'CANCEL',
+              style: GoogleFonts.pressStart2p(
+                fontSize: 10,
+                color: MinecraftColors.stone,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                _userName = nameController.text.isNotEmpty
+                    ? nameController.text
+                    : _userName;
+                _userEmail = emailController.text.isNotEmpty
+                    ? emailController.text
+                    : _userEmail;
+              });
+              nameController.dispose();
+              emailController.dispose();
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Profile updated!',
+                    style: GoogleFonts.pressStart2p(fontSize: 8),
+                  ),
+                  backgroundColor: MinecraftColors.grassGreen,
+                ),
+              );
+            },
+            child: Text('SAVE'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showOrdersPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => _OrdersPage()),
+    );
+  }
+
+  void _showWishlistPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => _WishlistPage()),
+    );
+  }
+
+  void _showAddressesPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => _AddressesPage()),
+    );
+  }
+
+  void _showPaymentPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => _PaymentPage()),
+    );
+  }
+
+  void _showSettingsPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => _SettingsPage()),
+    );
+  }
+}
+
+// ==================== ORDERS PAGE ====================
+class _OrdersPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('MY ORDERS')),
+      body: ListView.builder(
+        padding: EdgeInsets.all(16),
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: EdgeInsets.only(bottom: 12),
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: MinecraftColors.darkDirt,
+              border: Border.all(color: MinecraftColors.coal, width: 3),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'ORDER #${1000 + index}',
+                      style: GoogleFonts.pressStart2p(
+                        fontSize: 10,
+                        color: MinecraftColors.sand,
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: MinecraftColors.grassGreen,
+                        border: Border.all(
+                          color: MinecraftColors.darkGreen,
+                          width: 2,
+                        ),
+                      ),
+                      child: Text(
+                        'DELIVERED',
+                        style: GoogleFonts.pressStart2p(
+                          fontSize: 6,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Date: Feb ${index + 1}, 2026',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 8,
+                    color: MinecraftColors.stone,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  'Items: ${index + 2}',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 8,
+                    color: MinecraftColors.stone,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Total: \$${(99.99 + index * 10).toStringAsFixed(2)}',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 10,
+                    color: MinecraftColors.gold,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// ==================== WISHLIST PAGE ====================
+class _WishlistPage extends StatefulWidget {
+  @override
+  State<_WishlistPage> createState() => _WishlistPageState();
+}
+
+class _WishlistPageState extends State<_WishlistPage> {
+  final CartService _cartService = CartService();
+  final List<Product> _wishlist = [
+    Product(
+      id: '7',
+      name: 'Gaming Mouse',
+      price: 79.99,
+      imageUrl:
+          'https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=400',
+      category: 'Electronics',
+      description: 'RGB lighting',
+    ),
+    Product(
+      id: '8',
+      name: 'Webcam',
+      price: 149.99,
+      imageUrl:
+          'https://images.pexels.com/photos/7595263/pexels-photo-7595263.jpeg?auto=compress&cs=tinysrgb&w=400',
+      category: 'Electronics',
+      description: '4K resolution',
+    ),
+    Product(
+      id: '9',
+      name: 'Desk Lamp',
+      price: 39.99,
+      imageUrl:
+          'https://images.pexels.com/photos/1112598/pexels-photo-1112598.jpeg?auto=compress&cs=tinysrgb&w=400',
+      category: 'Accessories',
+      description: 'LED adjustable',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('WISHLIST')),
+      body: ListView.builder(
+        padding: EdgeInsets.all(16),
+        itemCount: _wishlist.length,
+        itemBuilder: (context, index) {
+          final product = _wishlist[index];
+          return Container(
+            margin: EdgeInsets.only(bottom: 12),
+            decoration: BoxDecoration(
+              color: MinecraftColors.darkDirt,
+              border: Border.all(color: MinecraftColors.coal, width: 3),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      right: BorderSide(color: MinecraftColors.coal, width: 3),
+                    ),
+                  ),
+                  child: Image.network(product.imageUrl, fit: BoxFit.cover),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product.name,
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: 8,
+                            color: MinecraftColors.sand,
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          '\$${product.price.toStringAsFixed(2)}',
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: 10,
+                            color: MinecraftColors.gold,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 35,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _cartService.addToCart(product);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Added to cart!',
+                                    style: GoogleFonts.pressStart2p(
+                                      fontSize: 8,
+                                    ),
+                                  ),
+                                  backgroundColor: MinecraftColors.grassGreen,
+                                  duration: Duration(seconds: 1),
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                            ),
+                            child: Text(
+                              'ADD TO CART',
+                              style: TextStyle(fontSize: 8),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete, color: MinecraftColors.redstone),
+                  onPressed: () {
+                    setState(() {
+                      _wishlist.removeAt(index);
+                    });
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// ==================== ADDRESSES PAGE ====================
+class _AddressesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('ADDRESSES'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Add address feature coming soon!',
+                    style: GoogleFonts.pressStart2p(fontSize: 8),
+                  ),
+                  backgroundColor: MinecraftColors.grassGreen,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+      body: ListView(
+        padding: EdgeInsets.all(16),
+        children: [
+          _buildAddressCard(
+            'Home',
+            '123 Pixel Street\nBlock City, MC 12345\nUnited States',
+            true,
+          ),
+          SizedBox(height: 12),
+          _buildAddressCard(
+            'Work',
+            '456 Diamond Avenue\nCraft Town, MC 67890\nUnited States',
+            false,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAddressCard(String title, String address, bool isDefault) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: MinecraftColors.darkDirt,
+        border: Border.all(color: MinecraftColors.coal, width: 3),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: GoogleFonts.pressStart2p(
+                  fontSize: 10,
+                  color: MinecraftColors.sand,
+                ),
+              ),
+              if (isDefault)
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: MinecraftColors.grassGreen,
+                    border: Border.all(
+                      color: MinecraftColors.darkGreen,
+                      width: 2,
+                    ),
+                  ),
+                  child: Text(
+                    'DEFAULT',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 6,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          SizedBox(height: 12),
+          Text(
+            address,
+            style: GoogleFonts.pressStart2p(
+              fontSize: 8,
+              color: MinecraftColors.stone,
+            ),
+          ),
+          SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 35,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: MinecraftColors.grassGreen,
+                      width: 2,
+                    ),
+                  ),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'EDIT',
+                      style: GoogleFonts.pressStart2p(
+                        fontSize: 8,
+                        color: MinecraftColors.grassGreen,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: Container(
+                  height: 35,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: MinecraftColors.redstone,
+                      width: 2,
+                    ),
+                  ),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'DELETE',
+                      style: GoogleFonts.pressStart2p(
+                        fontSize: 8,
+                        color: MinecraftColors.redstone,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ==================== PAYMENT PAGE ====================
+class _PaymentPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('PAYMENT'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Add payment method coming soon!',
+                    style: GoogleFonts.pressStart2p(fontSize: 8),
+                  ),
+                  backgroundColor: MinecraftColors.grassGreen,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+      body: ListView(
+        padding: EdgeInsets.all(16),
+        children: [
+          _buildPaymentCard(
+            'Visa ending in 1234',
+            'Expires 12/25',
+            Icons.credit_card,
+            true,
+          ),
+          SizedBox(height: 12),
+          _buildPaymentCard(
+            'Mastercard ending in 5678',
+            'Expires 08/26',
+            Icons.credit_card,
+            false,
+          ),
+          SizedBox(height: 12),
+          _buildPaymentCard(
+            'PayPal',
+            'customer@email.com',
+            Icons.account_balance_wallet,
+            false,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentCard(
+    String title,
+    String subtitle,
+    IconData icon,
+    bool isDefault,
+  ) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: MinecraftColors.darkDirt,
+        border: Border.all(color: MinecraftColors.coal, width: 3),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: MinecraftColors.grassGreen.withOpacity(0.2),
+              border: Border.all(color: MinecraftColors.grassGreen, width: 2),
+            ),
+            child: Icon(icon, color: MinecraftColors.grassGreen, size: 24),
+          ),
+          SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: GoogleFonts.pressStart2p(
+                          fontSize: 8,
+                          color: MinecraftColors.sand,
+                        ),
+                      ),
+                    ),
+                    if (isDefault)
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: MinecraftColors.grassGreen,
+                          border: Border.all(
+                            color: MinecraftColors.darkGreen,
+                            width: 2,
+                          ),
+                        ),
+                        child: Text(
+                          'DEFAULT',
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: 6,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 6,
+                    color: MinecraftColors.stone,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(Icons.chevron_right, color: MinecraftColors.stone),
+        ],
+      ),
+    );
+  }
+}
+
+// ==================== SETTINGS PAGE ====================
+class _SettingsPage extends StatefulWidget {
+  @override
+  State<_SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<_SettingsPage> {
+  bool _notifications = true;
+  bool _emailUpdates = true;
+  bool _darkMode = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('SETTINGS')),
+      body: ListView(
+        padding: EdgeInsets.all(16),
+        children: [
+          Text(
+            'NOTIFICATIONS',
+            style: GoogleFonts.pressStart2p(
+              fontSize: 10,
+              color: MinecraftColors.sand,
+            ),
+          ),
+          SizedBox(height: 12),
+          _buildSwitchTile(
+            'Push Notifications',
+            'Get notified about orders',
+            _notifications,
+            (value) => setState(() => _notifications = value),
+          ),
+          _buildSwitchTile(
+            'Email Updates',
+            'Receive promotional emails',
+            _emailUpdates,
+            (value) => setState(() => _emailUpdates = value),
+          ),
+          SizedBox(height: 24),
+          Text(
+            'APPEARANCE',
+            style: GoogleFonts.pressStart2p(
+              fontSize: 10,
+              color: MinecraftColors.sand,
+            ),
+          ),
+          SizedBox(height: 12),
+          _buildSwitchTile(
+            'Dark Mode',
+            'Use dark theme',
+            _darkMode,
+            (value) => setState(() => _darkMode = value),
+          ),
+          SizedBox(height: 24),
+          Text(
+            'ABOUT',
+            style: GoogleFonts.pressStart2p(
+              fontSize: 10,
+              color: MinecraftColors.sand,
+            ),
+          ),
+          SizedBox(height: 12),
+          _buildInfoTile('Version', 'v1.0.0'),
+          _buildInfoTile('Terms of Service', ''),
+          _buildInfoTile('Privacy Policy', ''),
+          _buildInfoTile('Help & Support', ''),
+          SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(
+                      'DELETE ACCOUNT',
+                      style: GoogleFonts.pressStart2p(
+                        fontSize: 12,
+                        color: MinecraftColors.redstone,
+                      ),
+                    ),
+                    content: Text(
+                      'Are you sure?',
+                      style: GoogleFonts.pressStart2p(
+                        fontSize: 10,
+                        color: MinecraftColors.sand,
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          'CANCEL',
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: 10,
+                            color: MinecraftColors.stone,
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: MinecraftColors.redstone,
+                        ),
+                        child: Text('DELETE'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: MinecraftColors.redstone,
+              ),
+              child: Text('DELETE ACCOUNT'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSwitchTile(
+    String title,
+    String subtitle,
+    bool value,
+    Function(bool) onChanged,
+  ) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: MinecraftColors.darkDirt,
+        border: Border.all(color: MinecraftColors.coal, width: 2),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 8,
+                    color: MinecraftColors.sand,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 6,
+                    color: MinecraftColors.stone,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Switch(
+            value: value,
+            onChanged: onChanged,
+            activeColor: MinecraftColors.grassGreen,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoTile(String title, String subtitle) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: MinecraftColors.darkDirt,
+        border: Border.all(color: MinecraftColors.coal, width: 2),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: GoogleFonts.pressStart2p(
+                fontSize: 8,
+                color: MinecraftColors.sand,
+              ),
+            ),
+          ),
+          if (subtitle.isNotEmpty)
+            Text(
+              subtitle,
+              style: GoogleFonts.pressStart2p(
+                fontSize: 8,
+                color: MinecraftColors.stone,
+              ),
+            )
+          else
+            Icon(Icons.chevron_right, color: MinecraftColors.stone),
+        ],
       ),
     );
   }
